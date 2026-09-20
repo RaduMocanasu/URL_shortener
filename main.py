@@ -3,33 +3,38 @@ from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 import string
 import secrets
+from database import create_tables, save_url, get_url
 
 alphabet = string.ascii_letters + string.digits
+shortened_url_length = 6
 
 app = FastAPI()
-shortened_url_length = 6
+
+create_tables()
 
 class URLRequest(BaseModel):
     url : str
 
-urls = {}
 
 @app.get("/")
 def home():
     return {"message": "URL shortener is working"}
 
+#posting the url to be shortened
 @app.post("/shorten")
 def shorten(data: URLRequest):
     shortened_url = ''.join(secrets.choice(alphabet) for i in range(shortened_url_length))
-    urls[shortened_url] = data.url
+    save_url(shortened_url, data.url)
     return {
         "original_url" : data.url,
         "shortened_url" : shortened_url
     }
 
+#takes the shortened url and redirects to the actual url
 @app.get("/{code}")
 def redirect_url(code : str):
-    if code not in urls:
+    original_url = get_url(code)
+    if code is None:
         raise HTTPException(status_code = 404, detail = "Short URL not found")
 
-    return RedirectResponse(url = urls[code])
+    return RedirectResponse(original_url)
