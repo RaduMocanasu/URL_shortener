@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import string
 import secrets
@@ -10,6 +11,7 @@ alphabet = string.ascii_letters + string.digits
 shortened_url_length = 6
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory = "frontend"), name = "static")
 
 create_tables()
 
@@ -19,7 +21,8 @@ class URLRequest(BaseModel):
 
 @app.get("/")
 def home():
-    return {"message": "URL shortener is working"}
+    # return {"message": "URL shortener is working"}
+    return FileResponse("frontend/index.html")
 
 #posting the url to be shortened
 @app.post("/shorten")

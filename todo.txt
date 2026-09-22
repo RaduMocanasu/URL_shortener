@@ -1,0 +1,14 @@
+FastAPI server              v
+POST /shorten               v
+GET /{code}                 v
+Redirect                    v
+SQLite                      v
+Rate limiting               v
+Frontend            
+    Add basic html + js                         v
+    Add nice message for "Too many requests"    
+    Add css/ a little decoration
+    Making the returned url a hyperlink
+Handling hash collision     
+Tests
+Deployment
