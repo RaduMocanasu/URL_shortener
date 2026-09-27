@@ -33,6 +33,7 @@ button.addEventListener("click", async () => {
     //response.ok -> for successful responses in the 200-299 range
     if (!response.ok) {
         result.textContent = data.detail ?? "Something went wrong.";
+        result.className = "error"; //makes a new class called error, so that the displayed text is red
         return;
     }
     
@@ -57,5 +58,6 @@ button.addEventListener("click", async () => {
     link.target = "_blank";  //makes link open in a new tab
 
     result.appendChild(link);
+    result.className = "";   //clears the class for a successful response
 
 })
