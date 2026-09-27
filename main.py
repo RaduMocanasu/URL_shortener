@@ -11,6 +11,9 @@ alphabet = string.ascii_letters + string.digits
 shortened_url_length = 6
 
 app = FastAPI()
+#static tells fastapi to take the files "as-is", i.e without generating them dynamically, like the database
+#whenever the browser requests something under /static/..., look for that file in the frontend folder
+#this also handles all possible future frontend files automatically, so there is no need to make @app.get("/script.js") and so on
 app.mount("/static", StaticFiles(directory = "frontend"), name = "static")
 
 create_tables()
@@ -47,7 +50,7 @@ def shorten(data: URLRequest, request : Request):
 @app.get("/{code}")
 def redirect_url(code : str):
     original_url = get_url(code)
-    if code is None:
+    if original_url is None:
         raise HTTPException(status_code = 404, detail = "Short URL not found")
 
     return RedirectResponse(original_url)
