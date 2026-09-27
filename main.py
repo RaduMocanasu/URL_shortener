@@ -10,6 +10,9 @@ from rate_limiter import is_allowed
 alphabet = string.ascii_letters + string.digits
 shortened_url_length = 6
 
+#number of tries to save the url(arbitrary)
+n_iter = 10
+
 app = FastAPI()
 #static tells fastapi to take the files "as-is", i.e without generating them dynamically, like the database
 #whenever the browser requests something under /static/..., look for that file in the frontend folder
@@ -39,12 +42,22 @@ def shorten(data: URLRequest, request : Request):
             detail = "Too many requests"
         )
 
-    shortened_url = ''.join(secrets.choice(alphabet) for i in range(shortened_url_length))
-    save_url(shortened_url, data.url)
-    return {
-        "original_url" : data.url,
-        "shortened_url" : shortened_url
-    }
+    # generating a new code until the one which does not exists yet is found
+    # letting sqlite detect the collisions to prevent situations in which an user finds a new unused code, which is then taken out by another user.
+    for _ in range(n_iter):
+        shortened_url = ''.join(secrets.choice(alphabet) for i in range(shortened_url_length))
+
+        if save_url(shortened_url, data.url):
+            return {
+                "original_url" : data.url,
+                "shortened_url" : shortened_url
+            }
+
+    # if no new unique code is found, raise an exception
+    raise HTTPException(
+        status_code = 500,
+        detail = "Could not generate a unique short URL"
+    )
 
 #takes the shortened url and redirects to the actual url
 @app.get("/{code}")

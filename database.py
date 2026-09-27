@@ -24,15 +24,24 @@ def create_tables():
 def save_url(code : str, original_url : str):
     connection = get_connection()
 
-    # inserts a new row into the database. the ? characters are placeholders(like %d in printf, or {arg} in f strings)
-    connection.execute(
-        "Insert INTO urls (code, original_url) VALUES (?, ?)",
-        (code, original_url)
-    )
+    # try to insert a new row into the database
+    try:
+        # inserts a new row into the database. the ? characters are placeholders(like %d in printf, or {arg} in f strings)
+        connection.execute(
+            "Insert INTO urls (code, original_url) VALUES (?, ?)",
+            (code, original_url)
+        )
 
-    # saves changes
-    connection.commit()
-    connection.close()
+        # saves changes
+        connection.commit()
+        return True
+
+    # if a row with the same code already exists, return false
+    except sqlite3.IntegrityError:
+        return False
+    
+    finally:
+        connection.close()
 
 # gets the long url for the code
 def get_url(code : str):
