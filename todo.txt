@@ -9,6 +9,6 @@ Frontend
     Add nice message for "Too many requests"    v
     Add css/ a little decoration                v
     Making the returned url a hyperlink         v
-Handling hash collision     
+Handling hash collision     v
 Tests
 Deployment
