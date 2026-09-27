@@ -6,9 +6,9 @@ SQLite                      v
 Rate limiting               v
 Frontend            
     Add basic html + js                         v
-    Add nice message for "Too many requests"    
+    Add nice message for "Too many requests"    v
     Add css/ a little decoration
-    Making the returned url a hyperlink
+    Making the returned url a hyperlink         v
 Handling hash collision     
 Tests
 Deployment
