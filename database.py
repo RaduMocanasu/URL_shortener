@@ -45,18 +45,19 @@ def save_url(code : str, original_url : str):
 
 # gets the long url for the code
 def get_url(code : str):
-    connection = get_connection()
 
-    # finds the original_url from the urls table where 'code' is equal to a given value 
-    cursor = connection.execute(
-        "SELECT original_url FROM urls WHERE code = ?",
-        (code,)
-    )
+    # context manager for opening and closing the connection
+    # context manager : with open("file.txt", "r") as file. It opens a resource and cleans it up even if an exception occured.
+    with get_connection() as connection:
 
-    # gets the first matching row
-    row = cursor.fetchone()
+        # finds the original_url from the urls table where 'code' is equal to a given value 
+        cursor = connection.execute(
+            "SELECT original_url FROM urls WHERE code = ?",
+            (code,)
+        )
 
-    connection.close()
+        # gets the first matching row
+        row = cursor.fetchone()
 
     if row is None:
         return None

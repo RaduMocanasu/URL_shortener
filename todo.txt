@@ -10,8 +10,8 @@ Frontend
     Add css/ a little decoration                v
     Making the returned url a hyperlink         v
 Handling hash collision     v
-URL validation
-Better Error Handling
+URL validation              v
+Better Error Handling       v
 Rate Limiter Cleanup
 Tests
 README
