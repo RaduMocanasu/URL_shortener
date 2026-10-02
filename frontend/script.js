@@ -31,8 +31,15 @@ button.addEventListener("click", async () => {
 
     //handle the case for too many requests
     //response.ok -> for successful responses in the 200-299 range
+    //special case for invalid url error
+    if (response.status == 422){
+        result.textContent = "Enter a valid URL";
+        result.className = "error";
+        return;
+    }
+
     if (!response.ok) {
-        result.textContent = data.detail ?? "Something went wrong.";
+        result.textContent = data.detail ?? "Something went wrong";
         result.className = "error"; //makes a new class called error, so that the displayed text is red
         return;
     }

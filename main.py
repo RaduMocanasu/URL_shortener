@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 import string
 import secrets
 from database import create_tables, save_url, get_url
@@ -21,8 +21,9 @@ app.mount("/static", StaticFiles(directory = "frontend"), name = "static")
 
 create_tables()
 
+# expects a string in the format "http://..." or "https://...". still the database will hold the string, not the url object
 class URLRequest(BaseModel):
-    url : str
+    url : HttpUrl
 
 
 @app.get("/")
@@ -47,9 +48,9 @@ def shorten(data: URLRequest, request : Request):
     for _ in range(n_iter):
         shortened_url = ''.join(secrets.choice(alphabet) for i in range(shortened_url_length))
 
-        if save_url(shortened_url, data.url):
+        if save_url(shortened_url, str(data.url)):
             return {
-                "original_url" : data.url,
+                "original_url" : str(data.url),
                 "shortened_url" : shortened_url
             }
 
