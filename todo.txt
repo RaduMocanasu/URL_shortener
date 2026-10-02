@@ -12,7 +12,7 @@ Frontend
 Handling hash collision     v
 URL validation              v
 Better Error Handling       v
-Rate Limiter Cleanup
-Tests
+Rate Limiter Cleanup        v
+Tests   
 README
 Deployment
