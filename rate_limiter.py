@@ -13,7 +13,7 @@ def cleanup_clients(now):
     stale_clients = []
 
     # loop for checking users
-    for ip, client in client.items():
+    for ip, client in clients.items():
         if now - client['last_request'] >= inactive_timeout:
             stale_clients.append(ip)
 

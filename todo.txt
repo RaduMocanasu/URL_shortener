@@ -13,15 +13,15 @@ Handling hash collision     v
 URL validation              v
 Better Error Handling       v
 Rate Limiter Cleanup        v
-Tests                       
+Tests                       v
     Valid shortening        v
-    Redirect works          
-    Unknown code            
-    Invalid URL             
-    Rate limiting           
-    Rate refill             
-    Rate limiter cleanup
-    Database persistence    
-    Collision retry         
+    Redirect works          v
+    Unknown code            v
+    Invalid URL             v
+    Rate limiting           v
+    Rate refill             v
+    Rate limiter cleanup    v
+    Database persistence    v
+    Collision retry         v
 README
 Deployment
